@@ -13,8 +13,25 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+// Route::resource('register', 'AuthController@register');
+// Route::post('login', 'AuthController@login');
+// Route::name('me')->get('users/me', 'User\UserController@me');
+// Route::resource('users', 'User\UserController', ['except' => ['create', 'edit']]);
+// Route::name('verify')->get('users/verify/{token}', 'User\UserController@verify');
+// Route::name('resend')->get('users/{user}/resend', 'User\UserController@resend');
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', 'AuthController@login');
+    Route::post('register', 'UserController@store');
+    Route::post('update', 'UserController@update');
+
 });
-Route::post('register', 'AuthController@register');
-Route::post('login', 'AuthController@login');

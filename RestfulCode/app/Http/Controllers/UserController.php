@@ -1,14 +1,30 @@
 <?php
+namespace App\Http\Controllers;
 
 use App\User;
+use Intervention\Image\ImageManagerStatic as Image;
 use App\Mail\UserCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Transformers\UserTransformer;
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class UserController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
+
+    // protected function allowedAdminAction()
+    // {
+    //     if (Gate::denies('admin-action')) {
+    //         throw new AuthorizationException('This action is unauthorized');
+    //     }
+    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +32,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $this->allowedAdminAction();
+        //$this->allowedAdminAction();
         
         $users = User::all();
 
@@ -34,7 +50,7 @@ class UserController extends Controller
         $rules = [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6',
         ];
 
         $this->validate($request, $rules);
@@ -46,33 +62,29 @@ class UserController extends Controller
         $data['admin'] = User::REGULAR_USER;
 
         $user = User::create($data);
+        $this->sendMailAdmin();
 
-        return $this->showOne($user, 201);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        return $this->showOne($user);
+        return response()->json($user, 201);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
+        if(!$request->has('id')) {
+            $message = 'You need to specify an user to update';
+            $code = 422;
+            return response()->json(['error' => $message, 'code' => $code], $code);
+        }
+        $user = User::find($request->id);
+
         $rules = [
             'email' => 'email|unique:users,email,' . $user->id,
-            'password' => 'min:6|confirmed',
+            'password' => 'min:6',
             'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER,
         ];
 
@@ -86,11 +98,16 @@ class UserController extends Controller
             $user->email = $request->email;
         }
 
-        if($request->has('avatar')){
-            $filename = $user->id.'-'.substr( md5( $user->id . '-' . time() ), 0, 15) . '.jpg'; // for now just assume .jpg : \
-            $path = public_path('avatars/' . $filename);
+        if($request->hasFile('avatar')){
+            $image = $request->file('avatar');
+            $fileName = time() . '.' . $image->getClientOriginalExtension();
+            $path = public_path('avatars/' . $fileName);
             Image::make($request->avatar)->orientate()->fit(500)->save($path);
-            $user->avatar = $filename;
+            $user->avatar = $path;
+        }
+
+        if ($request->has('birthday')) {
+            $user->birthday = $request->birthday;
         }
 
         if ($request->has('password')) {
@@ -98,59 +115,35 @@ class UserController extends Controller
         }
 
         if ($request->has('admin')) {
-            $this->allowedAdminAction();
-        
             if (!$user->isVerified()) {
-                return $this->errorResponse('Only verified users can modify the admin field', 409);
+                $message = 'Only verified users can modify the admin field';
+                $code = 409;
+                return response()->json(['error' => $message, 'code' => $code], $code);
             }
 
             $user->admin = $request->admin;
         }
 
         if (!$user->isDirty()) {
-            return $this->errorResponse('You need to specify a different value to update', 422);
+            $message = 'You need to specify a different value to update';
+            $code = 422;
+            return response()->json(['error' => $message, 'code' => $code], $code);
         }
 
         $user->save();
+        $this->sendMailAdmin();
 
-        return $this->showOne($user);
+        return response()->json($user, 201);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
+    public function sendMailAdmin()
     {
-        $user->delete();
-
-        return $this->showOne($user);
-    }
-
-    public function verify($token)
-    {
-        $user = User::where('verification_token', $token)->firstOrFail();
-
-        $user->verified = User::VERIFIED_USER;
-        $user->verification_token = null;
-
-        $user->save();
-
-        return $this->showMessage('The account has been verified succesfully');
-    }
-
-    public function resend(User $user)
-    {
-        if ($user->isVerified()) {
-            return $this->errorResponse('This user is already verified', 409);
-        }
-
-        retry(5, function() use ($user) {
-                Mail::to($user)->send(new UserCreated($user));
-            }, 100);
-
-        return $this->showMessage('The verification email has been resend');
+        $user = User::where(['admin' => 'true'])->first();
+        Mail::send([], [], function ($message) use ($user) {
+          $message->to($user->email)
+            ->subject("Information user have've updated!")
+            ->setBody('Dear Admin!')
+            ->setBody("<h1>Information user have've updated!</h1>", 'text/html');
+        });
     }
 }
