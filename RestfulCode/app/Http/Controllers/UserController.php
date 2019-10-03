@@ -3,14 +3,10 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Intervention\Image\ImageManagerStatic as Image;
-use App\Mail\UserCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Transformers\UserTransformer;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
