@@ -26,7 +26,7 @@ DB_DATABASE=db_app
 DB_USERNAME=user_app
 DB_PASSWORD=pass_app
 
-2. Setup EMail
+2. Setup EMail (if you can not send email with your account gmail, let go to: https://myaccount.google.com/lesssecureapps and set it to ON).
 MAIL_DRIVER=smtp
 MAIL_FROM_ADDRESS=noreply@domain.com
 MAIL_FROM_NAME=DomainName
