@@ -8,7 +8,7 @@
 * mysql -u root -proot@123 -h localhost
 * ALTER USER 'user_app'@'%' IDENTIFIED WITH mysql_native_password BY 'pass_app';
 * FLUSH PRIVILEGES;
-2. docker exec -it restfullbase-php-fpm bash
+2. ```bash docker exec -it restfullbase-php-fpm bash ```
 * composer global require "laravel/installer"
 * cd  RestfulCode/
 * composer update
