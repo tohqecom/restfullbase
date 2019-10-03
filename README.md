@@ -18,16 +18,16 @@
 * ```php artisan migrate``` (run this when you setup correct the connection of DB in .env file)
 
 ## Environment:
-```1. Setup DB
+``` 1. Setup DB
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=db_app
 DB_USERNAME=user_app
-DB_PASSWORD=pass_app```
+DB_PASSWORD=pass_app
 
 2. Setup EMail
-```MAIL_DRIVER=smtp
+MAIL_DRIVER=smtp
 MAIL_FROM_ADDRESS=noreply@domain.com
 MAIL_FROM_NAME=DomainName
 MAIL_HOST=smtp.gmail.com
