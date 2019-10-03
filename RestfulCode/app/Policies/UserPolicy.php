@@ -23,6 +23,18 @@ class UserPolicy
     }
 
     /**
+     * Admin can view all users.
+     *
+     * @param  \App\User  $user
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function index(User $authenticatedUser, User $user)
+    {
+        return $authenticatedUser->id === $user->id;
+    }
+
+    /**
      * Determine whether the user can update the user.
      *
      * @param  \App\User  $user

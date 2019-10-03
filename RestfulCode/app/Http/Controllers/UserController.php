@@ -10,20 +10,21 @@ use App\Transformers\UserTransformer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:api');
-    // }
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['store']]);
+    }
 
-    // protected function allowedAdminAction()
-    // {
-    //     if (Gate::denies('admin-action')) {
-    //         throw new AuthorizationException('This action is unauthorized');
-    //     }
-    // }
+    protected function allowedAdminAction()
+    {
+        if (Gate::denies('admin-action')) {
+            throw new AuthorizationException('This action is unauthorized');
+        }
+    }
 
     /**
      * Display a listing of the resource.
@@ -32,11 +33,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        //$this->allowedAdminAction();
+        $this->allowedAdminAction();
         
-        $users = User::all();
+        $users = User::where(['deleted_at' => null])->get();
 
-        return $this->showAll($users);
+        return response()->json($users, 201);
     }
 
     /**
