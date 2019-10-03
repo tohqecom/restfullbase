@@ -1,9 +1,9 @@
 # GUIDE
-##Current versions:
+## Current versions:
 * Laravel 6.0
 * PHP Must be version 7.3 (or > 7.3)
 
-##Docker: After setup docker finished:
+## Docker: After setup docker finished:
 1. docker exec -it restfullbase-mysql bash
 * mysql -u root -proot@123 -h localhost
 * ALTER USER 'user_app'@'%' IDENTIFIED WITH mysql_native_password BY 'pass_app';
@@ -17,7 +17,7 @@
 ** after finished you will see in .env file like this: JWT_SECRET=XuWe37As7N9fUT67NyBMdQeNWgUl6dmVs7rJz8zOu1ZCbBak8hNPzjEA00CEj4h1
 * php artisan migrate (run this when you setup correct the connection of DB in .env file)
 
-##Environment:
+## Environment:
 1. Setup DB
 DB_CONNECTION=mysql
 DB_HOST=mysql
