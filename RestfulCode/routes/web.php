@@ -11,12 +11,15 @@
 |
 */
 
-Route::get('/welcome', function () {
+Auth::routes();
+Route::get('/', function () {
     return view('welcome');
 });
-Auth::routes();
-// Route::get('/login', 'AuthController@login');
-Route::get('/', 'ChatController@index');
+// Route::get('/', 'ChatController@index');
 Route::get('/chat', 'ChatController@index');
 Route::post('/chat', 'ChatController@send');
 Route::get('/messages', 'ChatController@messages');
+// dd(Auth::routes());
+
+Route::post('/login', 'Auth\LoginController@login');
+

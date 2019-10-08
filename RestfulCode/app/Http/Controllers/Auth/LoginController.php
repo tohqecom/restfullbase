@@ -34,17 +34,16 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('guest')->except('logout');
-        $this->middleware('auth:web', ['except' => ['login']]);
+        $this->middleware('guest');
     }
 
     public function login() {
         $credentials = request(['email', 'password']);
-// dd(auth()->attempt($credentials));
+
         if (! $token = auth()->attempt($credentials)) {
             $this->redirectTo = '/welcome';
         }
-// dd(auth()->factory()->getTTL());
+
         return redirect('/chat');
     }
 
