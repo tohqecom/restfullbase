@@ -11,7 +11,7 @@
 |
 */
 
-Auth::routes();
+// Auth::routes();
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,4 +22,4 @@ Route::get('/messages', 'ChatController@messages');
 // dd(Auth::routes());
 
 Route::post('/login', 'Auth\LoginController@login');
-
+Route::get('/logout', 'Auth\LoginController@logout');

@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="form-group">
-                        <a href="" class=" col-lg-4 text-right btn btn-primary pull-right" id="submitSend" role="button">
+                        <a href="#" class=" col-lg-4 text-right btn btn-primary pull-right" id="submitSend" role="button">
                             <i class="fa fa-plus"></i> Send Message
                         </a>
                     </div>

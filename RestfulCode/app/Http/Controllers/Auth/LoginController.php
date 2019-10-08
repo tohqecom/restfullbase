@@ -48,6 +48,7 @@ class LoginController extends Controller
     }
 
     public function logout() {
+        dd(123);
         if (Auth::logout()) {
             redirect('/welcome');
         }
