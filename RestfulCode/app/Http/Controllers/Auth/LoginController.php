@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/welcome';
 
     /**
      * Create a new controller instance.
@@ -34,7 +34,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest', ['except' => 'logout']);
     }
 
     public function login() {
@@ -45,12 +45,5 @@ class LoginController extends Controller
         }
 
         return redirect('/chat');
-    }
-
-    public function logout() {
-        dd(123);
-        if (Auth::logout()) {
-            redirect('/welcome');
-        }
     }
 }
