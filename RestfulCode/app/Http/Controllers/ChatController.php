@@ -58,12 +58,13 @@ class ChatController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => [
-                'time' => $message->created_at->diffForHumans(),
+                'time' => $message->created_at->format('d M,Y H:i a'),
                 'user_id' => $fromUser->id,
                 'username' => $fromUser->name,
                 'message' => $message->message
             ]
         ], 200);
+        // return redirect('/messages');
     }
 
     /**
@@ -80,12 +81,14 @@ class ChatController extends Controller
 
         foreach ($data as $message) {
             $messages[] = [
-                'time' => (new Carbon($message->created_at))->diffForHumans(),
+                'time' => (new Carbon($message->created_at))->format('d M,Y H:i a'),//$message->created_at,//
                 'user_id' => $message->user_id,
                 'username' => $message->user->name,
                 'message' => $message->message
             ];
         }
+// dd($messages);
+        // return view('chat.messages', ['messages' => $messages]);
 
         return response()->json([
             'status' => 'success',

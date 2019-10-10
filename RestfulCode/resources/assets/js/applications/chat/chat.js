@@ -98,7 +98,6 @@ customModules.chatController = {
             dataType: 'json',
             success: function (response) {
                 if (response.status == 'success') {
-
                     textarea.val('');
                     container.append(self.renderMessage(response.message));
                     container.scrollTop(container[0].scrollHeight);
@@ -120,9 +119,6 @@ customModules.chatController = {
     },
     renderMessage: function(message) {
         var messageTemplate = require("./../../templates/chat/message.html");
-        // return Mustache.render(messageTemplate, message);
-        // console.log(messageTemplate);
-        // console.log(message);
         return messageTemplate(message);
     }
 };

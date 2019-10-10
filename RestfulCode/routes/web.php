@@ -23,3 +23,10 @@ Route::get('/messages', 'ChatController@messages');
 
 Route::post('/login', 'Auth\LoginController@login');
 Route::get('/logout', 'Auth\LoginController@logout');
+
+
+Route::get('/clear-cache', function() {
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    return "Cache is cleared";
+});

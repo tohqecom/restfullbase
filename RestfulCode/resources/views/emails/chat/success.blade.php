@@ -6,14 +6,10 @@
     Messages by last hour:
     <br>
     @foreach ($messages as $message)
-        <div class="media msg">
-            <div class="media-body">
-                <small class="pull-right time"><i class="fa fa-clock-o"></i> {{ $message->created_at->diffForHumans() }}</small>
-                <b class="media-heading">{{ $message->user->name }}</b>
-                <p>
-                    <small class="col-lg-10">{{ $message->message }}</small>
-                </p>
-            </div>
+        <div class="col-md-4 col-sm-6 item-message">
+            <div class="message">{{ $message->message }}</div>
+            <div class="user">{{ $message->user->name }}</div>
+            <div class="time">{{ $message->created_at-> }}</div>
         </div>
     @endforeach
 @endif
