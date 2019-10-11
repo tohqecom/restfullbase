@@ -60,9 +60,9 @@ customModules.chatController = {
                     $.each(response.messages, function(index, message) {
                         container.prepend(self.renderMessage(message));
                     });
-
+console.log(response);
                     if (response.next) {
-                        container.prepend('<a class="more" href="' + response.next + '">Show more</a>');
+                        container.append('<div id="pagination" class=""><a class="more" href="' + response.next + '">Show more</a></div>');
                     }
 
                     if ('function' == typeof callback) {
@@ -120,9 +120,23 @@ customModules.chatController = {
     },
     renderMessage: function(message) {
         var messageTemplate = require("./../../templates/chat/message.html");
-        // return Mustache.render(messageTemplate, message);
-        // console.log(messageTemplate);
-        // console.log(message);
-        return messageTemplate(message);
+        var obj = $(messageTemplate);
+        obj.find('.message').text(message.message);
+        obj.find('.user').text(message.username);
+        obj.find('.time').text(message.time);
+        return obj;
+    }
+    applyPagination: function (selector, totalPages, visiblePages, records, totalRecords, recPerPage, page) {
+        $pagination.twbsPagination({
+            totalPages: totalPages,
+            visiblePages: visiblePages,
+            onPageClick: function (event, page) {
+                  displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+                  endRec = (displayRecordsIndex) + recPerPage;
+                 
+                  displayRecords = records.slice(displayRecordsIndex, endRec);
+                  generate_table();
+            }
+        });
     }
 };

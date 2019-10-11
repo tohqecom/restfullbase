@@ -77,8 +77,10 @@ class ChatController extends Controller
         $data = Message::getMessages();
 
         $messages = [];
+        dd($data);
         $next = $data->nextPageUrl();
-
+        $current = $data->currentPage();
+        $lastPage = $data->lastPage();
         foreach ($data as $message) {
             $messages[] = [
                 'time' => (new Carbon($message->created_at))->format('d M,Y H:i a'),//$message->created_at,//
@@ -93,7 +95,9 @@ class ChatController extends Controller
         return response()->json([
             'status' => 'success',
             'messages' => $messages,
-            'next' => $next
+            'next' => $next,
+            'current' => $current,
+            'last' => $lastPage
         ], 200);
-    }
+    }    
 }
