@@ -44544,11 +44544,10 @@ customModules.chatController = {
         if (response.status == 'success') {
           $.each(response.messages, function (index, message) {
             container.prepend(self.renderMessage(message));
-          });
-          console.log(response);
+          }); // console.log(response);
 
           if (response.next) {
-            container.append('<div class=""><a class="more" href="' + response.next + '">Show more</a></div>');
+            container.append('<div id="pagination" class=""><a class="more" href="' + response.next + '">Show more</a></div>');
           }
 
           if ('function' == typeof callback) {
@@ -44609,7 +44608,19 @@ customModules.chatController = {
     obj.find('.user').text(message.username);
     obj.find('.time').text(message.time);
     return obj;
-  }
+  } // applyPagination: function (selector, totalPages, visiblePages, records, totalRecords, recPerPage, page) {
+  //     $pagination.twbsPagination({
+  //         totalPages: totalPages,
+  //         visiblePages: visiblePages,
+  //         onPageClick: function (event, page) {
+  //               displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+  //               endRec = (displayRecordsIndex) + recPerPage;
+  //               displayRecords = records.slice(displayRecordsIndex, endRec);
+  //               generate_table();
+  //         }
+  //     });
+  // }
+
 };
 
 /***/ }),
@@ -44683,30 +44694,18 @@ Vue.http.interceptors.push(function (request, next) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-md-4 col-sm-6 item-message\">\n    <div class=\"message\">{{ message }}</div>\n    <div class=\"user\">{{ username }}</div>\n    <div class=\"time\">{{ time }}</div>\n</div>";
-
-/***/ }),
-
-/***/ "./resources/sass/app.scss":
-/*!*********************************!*\
-  !*** ./resources/sass/app.scss ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
+module.exports = "<div class=\"col-md-6 col-sm-6 item-message\">\n    <div class=\"message\">{{ message }}</div>\n    <div class=\"user\">{{ username }}</div>\n    <div class=\"time\">{{ time }}</div>\n</div>";
 
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
+/*!***********************************!*\
+  !*** multi ./resources/js/app.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /application/RestfulCode/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /application/RestfulCode/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /application/RestfulCode/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ }),

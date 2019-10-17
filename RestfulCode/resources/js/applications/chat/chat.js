@@ -60,7 +60,7 @@ customModules.chatController = {
                     $.each(response.messages, function(index, message) {
                         container.prepend(self.renderMessage(message));
                     });
-console.log(response);
+// console.log(response);
                     if (response.next) {
                         container.append('<div id="pagination" class=""><a class="more" href="' + response.next + '">Show more</a></div>');
                     }
@@ -126,17 +126,17 @@ console.log(response);
         obj.find('.time').text(message.time);
         return obj;
     }
-    applyPagination: function (selector, totalPages, visiblePages, records, totalRecords, recPerPage, page) {
-        $pagination.twbsPagination({
-            totalPages: totalPages,
-            visiblePages: visiblePages,
-            onPageClick: function (event, page) {
-                  displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
-                  endRec = (displayRecordsIndex) + recPerPage;
+    // applyPagination: function (selector, totalPages, visiblePages, records, totalRecords, recPerPage, page) {
+    //     $pagination.twbsPagination({
+    //         totalPages: totalPages,
+    //         visiblePages: visiblePages,
+    //         onPageClick: function (event, page) {
+    //               displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+    //               endRec = (displayRecordsIndex) + recPerPage;
                  
-                  displayRecords = records.slice(displayRecordsIndex, endRec);
-                  generate_table();
-            }
-        });
-    }
+    //               displayRecords = records.slice(displayRecordsIndex, endRec);
+    //               generate_table();
+    //         }
+    //     });
+    // }
 };

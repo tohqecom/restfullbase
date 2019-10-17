@@ -74,10 +74,10 @@ class ChatController extends Controller
      */
     public function messages(Request $request)
     {
-        $data = Message::getMessages();
+        $data = Message::getMessages(6);
 
         $messages = [];
-        dd($data);
+        // dd($data);
         $next = $data->nextPageUrl();
         $current = $data->currentPage();
         $lastPage = $data->lastPage();
